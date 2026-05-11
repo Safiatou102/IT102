@@ -1,37 +1,23 @@
 #!/usr/bin/env python3
 # Script that "encrypts"/"decrypts" text using base64 encoding
-# By Ed Goad
-# 2/5
+# By Safiatou Traore
 
-# import necessary Python modules
+"""
+This script is to take an input and encode and decode BASE64
+"""
+
+# Imported libaries
 import base64
 
-def encode_data(plain_text):
-    # Convert plain_text string to bytes
-    plain_text = plain_text.encode()
-    # Encode the plain_text
-    cipher_text = base64.b64encode(plain_text)
-    # Convert the encoded bytes back to string
-    cipher_text = cipher_text.decode()
-    return cipher_text
+"""
+encoding planintext to base64
+We will do the following steps
+1.) Convert the string using UTF-8
+2.) Pass the bytes into a function called b64.encode
+4.) Resulted bytes and return
+"""
 
-def decode_data(cipher_text):
-    # Decode the cipher_text
-    plain_text = base64.b64decode(cipher_text)
-    # Convert the decoded bytes to string
-    plain_text = plain_text.decode()
-    return plain_text
-
-# Prompt the user for method and message
-method = input("Do you wish to Encode or Decode (e/d)? ").lower()
-message = input("What is the message? ")
-
-# Using first letter in variable, 
-# call the encode or decode function
-if method[0] == "e":
-    print(encode_data(message))
-elif method[0] == "d":
-    print(decode_data(message))
-else:
-    # if method wasn't "e" or "d", print error message and quit
-    print("Wrong method selected. Choose Encode or Decode")
+ def encode_to_base64(plaintext: str) -> str: 
+ text_as_bytes = plaintext.encode("utf-8") # "Hello" -1> b"Hello" == 0x48 0x65 0x6c
+encoded_bytes = base64.b64encode(text_as_bytes) # b'Hello" -> b"SGVsbG8="
+return encoded_bytes.decode("utf-8") # b"SGVsbG8=" -> "SGVsbG"

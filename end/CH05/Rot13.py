@@ -1,31 +1,76 @@
 #!/usr/bin/env python3
 # Script that encrypts/decrypts text using ROT13
-# By Ed Goad
-# date: 2/5
+# By Safiatou Traore
 
-# Prompt for the source message
-source_message = input("What is the message to encrypt/decrypt? ")
-# Convert message to lower-case for simplicity
-source_message = source_message.lower()
-final_message = ""
+def caesar_encrypt(message: str, shift: int) -> str:
+    
+    """
+    Encrypt a message by shifting each letter a shift amount
+    A-Z
+    a-z
 
-# Loop through each letter in the source message
-for letter in source_message:
-    # Convert the letter to the ASCII equivalent
-    ascii_num = ord(letter)
-    # Check to see if an alphabetic (a-z) character, 
-    # if not, skip
-    if ascii_num >= 97 and ascii_num <= 122:
-        # Add 13 to ascii_num to "shift" it by 13
-        new_ascii = ascii_num + 13
-        # Confirm new character will be alphabetic 
-        if new_ascii > 122:
-            # If not, wrap around
-            new_ascii = new_ascii - 26
-        final_message = final_message + chr(new_ascii)
-    else:
-        final_message = final_message + chr(ascii_num)
+    """
 
-# Print converted message
-print("Message has been converted:")
-print(final_message)
+    result = []
+    for char in message:
+        if char.isupper():
+            shifted = (ord(char)- ord("A") + shift) % 26 + ord("A")
+        result.append(chr(shifted)) 
+     elif char.islower():
+         shifted = (ord(char) - ord("a") + shift) % 26 + ord("a")
+        result.append(chr(shifted))
+     elif:
+       result.append(char)
+    
+    return "".join(result)
+
+def caesar_decrypt(ciphertext: str, shift: int) -> str:
+    """
+    Decrypt a caesar cipher message by shifting letters backwards
+    """
+
+    return caesar_encrypt(ciphertext, -shift)
+
+def get_shift_value() -> int:
+    """
+    Prompt the user for a amount of shifts to take
+    """
+     while True:
+        try:
+            shift = int(input("Enter a value between 1-25: "))
+            if 1 <= shift <= 25:
+                return shift
+            print("Please enter a valid shift")
+         except ValueError:
+            print("That is not a valid number or integer") 
+
+
+ def main():
+    print("Caesar Cipher Encrypt and decrypt") 
+    message = input("Enter a message: ").strip() 
+    if not message:
+     print("No message entered. Exiting")
+     return
+
+    #get the shift value
+     shift = get_shift_value() 
+
+     #Encrypt
+     encrypted = caesar_encrypt(message, shift)
+     print(F"Encrypted message: {encrypted}")  
+
+     #Decrypted if user even wants to?
+     answer = input("decrypt the message? (yes/no): ").strip().lower()
+
+     if answer in ("yes", "y"):
+         decrypted = casar_decrypt(encrypted, shift) 
+         prnt(F"Decrypted message: {decrypted}") 
+
+         #confirm
+         match = decrypted == message
+         print("validation of match")  
+      else:
+         print("Decryption skipped") 
+      print() 
+if __name__ == " _main_ ": 
+    main()            
