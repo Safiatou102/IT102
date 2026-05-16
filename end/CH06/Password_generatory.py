@@ -1,69 +1,89 @@
-"""
-Password Generator
 
-A secure password generator that has a minimum length of 8
 """
-#Libaries utilized
+Secure Password Generator
+Creates a password with:
+- Minimum length of 8
+- Optional uppercase letters
+- Optional lowercase letters
+- Optional digits
+- Optional special characters
+"""
+
 import random
 import string
 
-
-#Define character pools
+# Character pools
 UPPERCASE = string.ascii_uppercase
 LOWERCASE = string.ascii_lowercase
-DIGTTS = string.digits
-SPECIAL = r"!@#$%^&*()_-|\;<>"
+DIGITS = string.digits
+SPECIAL = "!@#$%^&*()-_=+[]{};:,.<>?/"
 
-# Minimum password length
 MIN_LENGTH = 8
 
-#Helper function
 
 def get_yes_or_no(prompt: str) -> bool:
-    """ Ask the user for a yes or no question"""
+    """Ask the user a yes or no question."""
+
     while True:
         answer = input(prompt).strip().lower()
-        if answer in ("y", "yes"):
-          return True
-        if answer in ("n", "no"):
-          return True
-    print(" Please enter yes or no: ")
+
+        if answer in ("yes", "y"):
+            return True
+
+        elif answer in ("no", "n"):
+            return False
+
+        else:
+            print("Please enter yes or no.")
+
 
 def get_password_length() -> int:
-     while True:
+    """Get a valid password length from the user."""
+
+    while True:
         try:
-           length = int(input("How long do you want the password?"))
-           if length >= MTN_LENGTH: 
-            return length
-           print("Please enter a valid length try again")
+            length = int(input("How long do you want the password? "))
+
+            if length >= MIN_LENGTH:
+                return length
+            else:
+                print(f"Please enter a length of at least {MIN_LENGTH}.")
+
         except ValueError:
-           print("Please enter a whole number")   
+            print("Please enter a valid number.")
 
 
 def get_criteria() -> dict:
-    """Take length, uppercase, lowercase, digits, special input from user"""
-    length = get_password_length()
-    criteria ={
-        "length": length,
-        "uppercase": get_yes_or_no(" Do you want uppercase letters?"),
-        "lowercase": get_yes_or_no(" Do you want lowercase letters?"),
-        "digits": get_yes_or_no("Numbers (0-9)"),
-        "special": get_yes_or_no(" Do you want special characters"),
+    """Get password requirements from the user."""
+
+    criteria = {
+        "length": get_password_length(),
+        "uppercase": get_yes_or_no("Do you want uppercase letters? "),
+        "lowercase": get_yes_or_no("Do you want lowercase letters? "),
+        "digits": get_yes_or_no("Do you want digits? "),
+        "special": get_yes_or_no("Do you want special characters? ")
     }
 
-    #Validator of criteria
-    if not any ([criteria["uppercase"], criteria["lowercase"],
-                 criteria["digits"], criteria["special"]]):
-      print("You must select one character type")
-      return get_criteria()
+    # Validation
+    if not any([
+        criteria["uppercase"],
+        criteria["lowercase"],
+        criteria["digits"],
+        criteria["special"]
+    ]):
+        print("You must select at least one character type.")
+        return get_criteria()
+
     return criteria
 
-def build_pool(criteria: dict) -> tuple[str,list[str]]:
-    """This is a character pool"""
+
+def build_pool(criteria: dict) -> tuple[str, list]:
+    """Build the character pool and required characters."""
+
     pool = ""
     required = []
 
-    if criterial["uppercase"]:
+    if criteria["uppercase"]:
         pool += UPPERCASE
         required.append(random.choice(UPPERCASE))
 
@@ -72,41 +92,51 @@ def build_pool(criteria: dict) -> tuple[str,list[str]]:
         required.append(random.choice(LOWERCASE))
 
     if criteria["digits"]:
-        pool += DIGITS 
-        required.append(random.choice(DIGITS)) 
+        pool += DIGITS
+        required.append(random.choice(DIGITS))
 
-    if  ["special"]: 
-      pool += SPECIAL
-    required.append(random.choice(SPECIAL))  
-    
+    if criteria["special"]:
+        pool += SPECIAL
+        required.append(random.choice(SPECIAL))
+
+    return pool, required
+
+
 def generate_password(criteria: dict) -> str:
-    """Generation of password creator """
+    """Generate a password based on the selected criteria."""
+
     pool, required = build_pool(criteria)
-    length = criterial["length"]    
 
-    #Fill any remaining slot with random characters
-    reamining_count = length - len(required)
-    remaing = [random.choice(pool)for _ in range(reamining_count)]
+    length = criteria["length"]
 
-    password_chars = required + remaing
+    remaining_count = length - len(required)
+
+    remaining = [
+        random.choice(pool)
+        for _ in range(remaining_count)
+    ]
+
+    password_chars = required + remaining
+
     random.shuffle(password_chars)
 
-
-    return"".join(password_chars)
+    return "".join(password_chars)
 
 
 def main():
+    """Main program loop."""
 
     while True:
-        criteria = het_criteria()
-        password = generate_password()
-        print("This is your generated password")
-        print(f"{password}")
+        criteria = get_criteria()
 
-        if not get_yes_or_no("Generate another password (y/n)"):
-            print("Stay secure")
+        password = generate_password(criteria)
+
+        print(f"\nGenerated Password: {password}\n")
+
+        if not get_yes_or_no("Generate another password? "):
+            print("Exiting program...")
             break
-        print()
 
-    if __name__ == "__main__":
-      main()
+
+if __name__ == "__main__":
+    main()
