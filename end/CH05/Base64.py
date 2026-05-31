@@ -2,6 +2,7 @@
 # Script that "encrypts"/"decrypts" text using base64 encoding
 # By Safiatou Traore
 
+
 """
 This script is to take an input and encode and decode BASE64
 """
@@ -18,8 +19,8 @@ We will do the following steps
 4.) Resulted bytes and return
 """
 
-    text_as_bytes = plaintext.encode("utf-8") # "Hello" -1> b"Hello" -> 0x48 0x65 0x6c
-    encoded_bytes = base64.b64encode(text_as_bytes) # b'Hello" -> b"SGVsbG8="
+text_as_bytes = plaintext.encode("utf-8") # "Hello" -1> b"Hello" -> 0x48 0x65 0x6c
+encoded_bytes = base64.b64encode(text_as_bytes) # b'Hello" -> b"SGVsbG8="
     return encoded_bytes.decode("utf-8") # b"SGVsbG8=" -> "SGVsbG"
 
 
