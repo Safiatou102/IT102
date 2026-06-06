@@ -1,29 +1,24 @@
-#!/usr/bin/env python3
-# Script that scans web server logs for 404 errors
-# By Ed Goad
-# date: 12/16
+#Print any IP gets a 404 status code
 
-import os
+"""
+The purpose of this script is to return 404 source IP if its found
+"""
 
-# Prompt for file to analyze
-log_file = input("Which file to analyze? ")
 
-# Get current file Directory
-script_path = os.path.abspath(__file__)
-script_dir = os.path.dirname(script_path)
-file_path = os.path.join(script_dir, log_file)
+#librarires utilized
+import re
 
-# Open file
-f = open(file_path, "r")
+def main():
+    LOG_FILE = r"C:\Users\justincase\Desktop\IT.102\IT102\start\CH07\access.log"
+    with open(LOG_FILE, "r") as f:
+        for line in f:
+            #Status code which is right after request and first numbers
+            ip = line.split()[0]
+            match = re.search(r'" 404', line)
+            if match:
+                print(f"{ip}")
 
-# Read file line by line
-while True:
-    line = f.readline()
-    if not line:
-        break
-    # Check for 404
-    if "404" in line:
-        print(line.strip())
 
-# Close file
-f.close()
+
+if __name__ == "__main__":
+    main()
