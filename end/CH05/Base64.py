@@ -2,61 +2,56 @@
 # Script that "encrypts"/"decrypts" text using base64 encoding
 # By Safiatou Traore
 
-
 """
 This script is to take an input and encode and decode BASE64
 """
 
-# Imported libaries
+# Imported libraries
 import base64
 
-"""
-def encoded_to_base64(plaintext: str) -> str:
-encoding planintext to base64
-We will do the following steps
-1.) Convert the string using UTF-8
-2.) Pass the bytes into a function called b64.encode
-4.) Resulted bytes and return
-"""
-
-text_as_bytes = plaintext.encode("utf-8") # "Hello" -1> b"Hello" -> 0x48 0x65 0x6c
-encoded_bytes = base64.b64encode(text_as_bytes) # b'Hello" -> b"SGVsbG8="
-    return encoded_bytes.decode("utf-8") # b"SGVsbG8=" -> "SGVsbG"
-
-
-def decode_to_base_64(encoded_text: str) -> str:
+def encode_to_base64(plaintext: str) -> str:
     """
-    1.)Taking base64 string back to original plaintext
-    2.) Convert base64 string to get oringnal byes
-    decode those bytes back to utf-8 string
+    Encoding plaintext to base64.
+    Steps:
+    1.) Convert the string using UTF-8
+    2.) Pass the bytes into a function called b64encode
+    3.) Decode the resulting bytes back to string
     """
-    encoded_as_bytes = encoded_text.encode("utf-8") #SGVsbG" -> b"SGVsbG8
-    decode_bytes = base64.b64decode(encoded_as_bytes) #b"SGVsbG8 -> b"hello"
-    return decoded_bytes.decode("utf-8")
+    text_as_bytes = plaintext.encode("utf-8")           # "Hello" -> b"Hello"
+    encoded_bytes = base64.b64encode(text_as_bytes)     # b"Hello" -> b"SGVsbG8="
+    return encoded_bytes.decode("utf-8")                # b"SGVsbG8=" -> "SGVsbG8="
 
-#DEFINE main what we want to call and how
+
+def decode_from_base64(encoded_text: str) -> str:
+    """
+    Decoding a base64 string back to original plaintext
+    Steps:
+    1.) Convert base64 string to bytes
+    2.) Decode those bytes back to UTF-8 string
+    """
+    encoded_as_bytes = encoded_text.encode("utf-8")     # "SGVsbG8=" -> b"SGVsbG8="
+    decoded_bytes = base64.b64decode(encoded_as_bytes)  # b"SGVsbG8=" -> b"Hello"
+    return decoded_bytes.decode("utf-8")               # b"Hello" -> "Hello"
+
 
 def main():
-    print("Base64 Encode / Decoder")
-    print(" THIS IS NOT ENCRYPTION")
-    #User input of what to encode
-    message = input("Enter your message to encode: ").strip()
-    #Step Encode
+    message = input("Enter text to encode: ").strip()
     if not message:
-        print("No message entered. Exiting")
+        print("No message entered. Exiting.")
         return
-    #Encode
-    encode = encode_to_base64(message)
-    print(f"Base64 : {encoded}")
 
-    #Decode
-    decode = decode_to_base_64(encode)
+    # Encode
+    encoded = encode_to_base64(message)
+    print(f"Encoded message: {encoded}")
 
-    #validation
-    match = decoded == message
-    print("Confirmation matched")
-    print()
+    # Ask if the user wants to decode
+    answer = input("Do you want to decode it back? (yes/no): ").strip().lower()
+    if answer in ("yes", "y"):
+        decoded = decode_from_base64(encoded)
+        print(f"Decoded message: {decoded}")
+    else:
+        print("Decoding skipped.")
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
