@@ -1,6 +1,4 @@
-"""
-This
-"""
+#libraries utilized
 
 import random
 
